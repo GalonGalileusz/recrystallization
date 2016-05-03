@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 20;
+    private int size = 4;
     int id = 0;
         
     private Cell [][]tab = new Cell[size][size];
@@ -181,50 +181,90 @@ public class Board extends JPanel implements Runnable{
     }
     
     public void action(){
-        
         for(int i=0; i<size; i++){
-            for(int j=0; j<size; j++){
-                int nbhdIndex = 0;
+            for(int j=0; j<size; j++){       
+                int nbhdIndex = 0; 
                 if(tab[i][j].getID()==0){
-                    if(cond.getBC()==0){
-                        if((i==0 || i==size-1) && (j==0 || j==size-1)){
-                            tab[i][j].setNBHD(0, 0);
-                            tab[i][j].setNBHD(1, 0);
-                            tab[i][j].setNBHD(2, 0); 
-                            tab[i][j].setNBHD(3, 0);
-                            tab[i][j].setNBHD(4, 0);//corner cell
-                            nbhdIndex = 5;
-                            
-                        }else if(i==0 || i==size-1 || j==0 || j==size-1){
-                            tab[i][j].setNBHD(0, 0);
-                            tab[i][j].setNBHD(1, 0);
-                            tab[i][j].setNBHD(2, 0);   //on the edge
-                            nbhdIndex = 3;
-                        }
-                        
-                    /*-------CHECKING NEIGHBOURHOOD--------------*/           
-                            for(int k=i-1; k<i+2; k++){ //-----------------from 1 up to 1 low (3 iterations) in rows
-                                for(int l=j-1; l<j+2; l++){ //-------------from 1 up to 1 low (3 iterations) in columns
-                                    if((k==i && l==j) || k<0 || k>=size || l<0 || l>=size)
-                                        System.out.println("zapierdalaj ");
-                                    else{
-                                        System.out.println("nbhd "+nbhdIndex);
-                                        tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
-                                        nbhdIndex++;
+                    switch (cond.getNeighbour()){
+                        case 0: //--------------------MOOR
+                            switch (cond.getBC()){
+                                case 0: //----------------NON PERIODIC BC
+                                    if((i==0 || i==size-1) && (j==0 || j==size-1)){
+                                        tab[i][j].setNBHD(0, 0);
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0); 
+                                        tab[i][j].setNBHD(3, 0);
+                                        tab[i][j].setNBHD(4, 0);//corner cell
+                                        nbhdIndex = 5;  
+                                    }else if(i==0 || i==size-1 || j==0 || j==size-1){
+                                        tab[i][j].setNBHD(0, 0);
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0);   //on the edge
+                                        nbhdIndex = 3;
                                     }
-                                }
-                            } 
-                        tab[i][j].showNBHD();
-                        temp[i][j].setID(tab[i][j].chooseSeed());
-                    }
-                }
-                System.out.println("cell: [i][j] "+i+" "+j);
-                tab[i][j].showNBHD();
-            }
-            
-            
-        }
+                        
+                                    /*-------CHECKING NEIGHBOURHOOD--------------*/           
+                                    for(int k=i-1; k<i+2; k++){ //-----------------from 1 up to 1 low (3 iterations) in rows
+                                        for(int l=j-1; l<j+2; l++){ //-------------from 1 up to 1 low (3 iterations) in columns
+                                            if((k==i && l==j) || k<0 || k>=size || l<0 || l>=size)
+                                                System.out.println("zapierdalaj ");
+                                            else{
+                                                System.out.println("nbhd "+nbhdIndex);
+                                                tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    } 
+                                    tab[i][j].showNBHD();
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                //}
+                                System.out.println("cell: [i][j] "+i+" "+j);
+                                tab[i][j].showNBHD();
+                                break;
         
+                                case 1: //----------------PERIODIC BC
+                                    for(int k=i-1; k<i+2; k++){
+                                        for(int l=j-1; l<j+2; l++){
+                                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if(k==i && l==j)
+                                                System.out.println("don't check itself");
+                                            else{
+                                                tab[i][j].setNBHD(nbhdIndex, tab[kk][ll].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                            }
+                                       
+                       
+                        
+                        break;
+                        case 1: //--------------------VON NEUMAN
+                        case 2: //--------------------PENTAGONAL + random for up, down, left, right
+                        case 3: //--------------------HEXANGONAL left
+                        case 4: //--------------------HEXAGONAL right
+                        case 5: //--------------------HEXAGONAL random (left or right)
+                    }
+                }  
+            }
+        }
+    
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
                 //if(tab[i][j].getID()==0){
@@ -238,15 +278,13 @@ public class Board extends JPanel implements Runnable{
                     temp[i][j].setID(0);
                     //temp[i][j].resetColor();
                     }
-                }
+                    }
                 
-            }
-                //}   
+                }
             }
         }
+    
     }
-    
-    
     
 
 }

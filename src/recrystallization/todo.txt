@@ -21,3 +21,8 @@ ROZMIESZCZENIE:
 DOWOLNA ILOŚĆ ZARODKÓW (zadać)  v
 
 KAŻDA KOMÓRKA MA INNY KOLOR I INNE ID   v
+
+
+Najpierw sprawdzam sąsiedztwo;  switch
+potem BC;   switch
+potem leci logika
