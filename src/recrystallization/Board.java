@@ -20,8 +20,10 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 4;
+    private int size = 15;
     int id = 0;
+    
+    //int n;
         
     private Cell [][]tab = new Cell[size][size];
     private Cell [][]temp = new Cell[size][size];
@@ -32,35 +34,35 @@ public class Board extends JPanel implements Runnable{
             
         cond = new Conditions();
         
-        int n;
+        //int n;
         
-        switch (cond.getNeighbour()){
-            case 0:
-                n=8;
-                break;
-            case 1:
-                n=4;
-                break;
-            case 2:
-                n=5;
-                break;
-            case 3 | 4 | 5:
-                n=6;
-                break;
-            default:
-                n=8;
-                break;                     
-        }
-        
-        System.out.println("n "+n);
+//        switch (cond.getNeighbour()){
+//            case 0:
+//                n=8;
+//                break;
+//            case 1:
+//                n=4;
+//                break;
+//            case 2:
+//                n=5;
+//                break;
+//            case 3 | 4 | 5:
+//                n=6;
+//                break;
+//            default:
+//                n=8;
+//                break;                     
+//        }
+//        
+//        System.out.println("n "+n);
         
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
                 
-                tab[i][j] = new Cell(n);
+                tab[i][j] = new Cell();
                 tab[i][j].setID(0);
                           
-                temp[i][j] = new Cell(n);
+                temp[i][j] = new Cell();
                 temp[i][j].setID(0);
             }
         }
@@ -153,7 +155,7 @@ public class Board extends JPanel implements Runnable{
                 repaint();
             }
             try{
-                Thread.sleep(300);
+                Thread.sleep(1000);
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -167,11 +169,11 @@ public class Board extends JPanel implements Runnable{
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
 
-                tab[i][j] = new Cell(cond.getNeighbour());
+                tab[i][j] = new Cell();
                 tab[i][j].setID(0);
                 tab[i][j].resetColor();
                 
-                temp[i][j] = new Cell(cond.getNeighbour());
+                temp[i][j] = new Cell();
                 temp[i][j].setID(0);
                 temp[i][j].resetColor();
 
@@ -217,10 +219,10 @@ public class Board extends JPanel implements Runnable{
                                     } 
                                     tab[i][j].showNBHD();
                                     temp[i][j].setID(tab[i][j].chooseSeed());
-                                //}
-                                System.out.println("cell: [i][j] "+i+" "+j);
-                                tab[i][j].showNBHD();
-                                break;
+                                
+                                    System.out.println("cell: [i][j] "+i+" "+j);
+                                    tab[i][j].showNBHD();
+                                    break;
         
                                 case 1: //----------------PERIODIC BC
                                     for(int k=i-1; k<i+2; k++){
@@ -250,40 +252,229 @@ public class Board extends JPanel implements Runnable{
                                         }
                                     }
                                     temp[i][j].setID(tab[i][j].chooseSeed());
+                                    break;
                             }
-                                       
-                       
-                        
-                        break;
+                            break;
                         case 1: //--------------------VON NEUMAN
+                            System.out.println("neigh "+cond.getNeighbour());
+                            switch (cond.getBC()){
+                                case 0:
+                                    if((i==0 || i==size-1) && (j==0 || j==size-1)){
+                                        tab[i][j].setNBHD(0, 0);
+                                        tab[i][j].setNBHD(1, 0);//corner cell
+                                        nbhdIndex = 2;  
+                                    }else if(i==0 || i==size-1 || j==0 || j==size-1){
+                                        tab[i][j].setNBHD(0, 0);   //on the edge
+                                        nbhdIndex = 1;
+                                    }
+                                    for(int k=i-1; k<i+2; k++){ //-----------------from 1 up to 1 low (3 iterations) in rows
+                                        for(int l=j-1; l<j+2; l++){ //-------------from 1 up to 1 low (3 iterations) in columns
+                                            if((k!=i && l!=j) || (k==i && l==j) || k<0 || k>=size || l<0 || l>=size)
+                                                System.out.println("elo ");
+                                            else{
+                                                System.out.println("nbhd "+nbhdIndex);
+                                                tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    tab[i][j].showNBHD();
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                
+                                    System.out.println("cell: [i][j] "+i+" "+j);
+                                    tab[i][j].showNBHD();
+                                    break;
+                                case 1:
+                                    for(int k=i-1; k<i+2; k++){
+                                        for(int l=j-1; l<j+2; l++){
+                                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if((k==i && l==j) || (k!=i && l!=j))
+                                                System.out.println("don't check itself");
+                                            else{
+                                                tab[i][j].setNBHD(nbhdIndex, tab[kk][ll].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                    break;
+                            }
+                            break;
                         case 2: //--------------------PENTAGONAL + random for up, down, left, right
+                            switch (cond.getBC()){
+                                case 0:
+                                    break;
+                                case 1:
+                                    break;        
+                            }
                         case 3: //--------------------HEXANGONAL left
+                            switch (cond.getBC()){
+                                case 0:
+                                    if((i==0 && j==0) || (i==size-1 && j==size-1)){ //corners: up-left and down-right
+                                        tab[i][j].setNBHD(0, 0);
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0);    //3 neighbours
+                                        nbhdIndex = 3;  
+                                    }else if((i==0 && j==size-1) || (i==size-1 && j==0) ){   //corners: up-right and down-left 
+                                        tab[i][j].setNBHD(0, 0);  
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0);  
+                                        tab[i][j].setNBHD(3, 0);
+                                        nbhdIndex = 4;              // 4 neighbours
+                                    }else if(i==0 || i==size-1 || j==0 || j==size-1){
+                                        tab[i][j].setNBHD(0, 0);   //on the edge
+                                        tab[i][j].setNBHD(1, 0);
+                                        nbhdIndex = 2;
+                                    }
+                                    for(int k=i-1; k<i+2; k++){ //-----------------from 1 up to 1 low (3 iterations) in rows
+                                        for(int l=j-1; l<j+2; l++){ //-------------from 1 up to 1 low (3 iterations) in columns
+                                            if((k==i && l==j) || k<0 || k>=size || l<0 || l>=size || (k==i-1 && l==j+1) || (k==i+1 && l==j-1))
+                                                System.out.println("zapierdalaj ");
+                                            else{
+                                                System.out.println("nbhd "+nbhdIndex);
+                                                tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    } 
+                                    tab[i][j].showNBHD();
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                
+                                    System.out.println("cell: [i][j] "+i+" "+j);
+                                    tab[i][j].showNBHD();
+                                    break;
+                                case 1:
+                                    for(int k=i-1; k<i+2; k++){
+                                        for(int l=j-1; l<j+2; l++){
+                                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if((k==i && l==j) || (k==i-1 && l==j+1) || (k==i+1 && l==j-1))
+                                                System.out.println("don't check itself");
+                                            else{
+                                                tab[i][j].setNBHD(nbhdIndex, tab[kk][ll].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                    break;        
+                            }
                         case 4: //--------------------HEXAGONAL right
+                            switch (cond.getBC()){
+                                case 0:
+                                    if((i==0 && j==0) || (i==size-1 && j==size-1)){ //corners: up-left and down-right
+                                        tab[i][j].setNBHD(0, 0);
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0);
+                                        tab[i][j].setNBHD(3, 0);
+                                        nbhdIndex = 4;//4 neighbours
+                                    }else if((i==0 && j==size-1) || (i==size-1 && j==0) ){   //corners: up-right and down-left 
+                                        tab[i][j].setNBHD(0, 0);  
+                                        tab[i][j].setNBHD(1, 0);
+                                        tab[i][j].setNBHD(2, 0); 
+                                        nbhdIndex = 3;// 3 neighbours
+                                    }else if(i==0 || i==size-1 || j==0 || j==size-1){
+                                        tab[i][j].setNBHD(0, 0);   //on the edge
+                                        tab[i][j].setNBHD(1, 0);
+                                        nbhdIndex = 2;
+                                    }
+                                    for(int k=i-1; k<i+2; k++){ //-----------------from 1 up to 1 low (3 iterations) in rows
+                                        for(int l=j-1; l<j+2; l++){ //-------------from 1 up to 1 low (3 iterations) in columns
+                                            if((k==i && l==j) || k<0 || k>=size || l<0 || l>=size || (k==i-1 && l==j-1) || (k==i+1 && l==j+1))
+                                                System.out.println("zapierdalaj ");
+                                            else{
+                                                System.out.println("nbhd "+nbhdIndex);
+                                                tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    } 
+                                    tab[i][j].showNBHD();
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                
+                                    System.out.println("cell: [i][j] "+i+" "+j);
+                                    tab[i][j].showNBHD();
+                                    break;
+                                case 1:
+                                    for(int k=i-1; k<i+2; k++){
+                                        for(int l=j-1; l<j+2; l++){
+                                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if((k==i && l==j) || (k==i-1 && l==j-1) || (k==i+1 && l==j+1))
+                                                System.out.println("don't check itself");
+                                            else{
+                                                tab[i][j].setNBHD(nbhdIndex, tab[kk][ll].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
+                                    break;
                         case 5: //--------------------HEXAGONAL random (left or right)
+                            //chuj wie co tu trzeba zrobić
+                            
                     }
                 }  
             }
         }
-    
+        }
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
-                //if(tab[i][j].getID()==0){
                 for(int k=0; k<size; k++){
                     for(int l=0; l<size; l++){
                         if(tab[i][j].getID()==0 && temp[i][j].getID()==tab[k][l].getID()){
-                    //temp[i][j].setColor(tab[k][l].getColor());
-                    tab[i][j].setID(temp[i][j].getID());
-                    tab[i][j].setColor(tab[k][l].getColor());
-                    tab[i][j].cleanNBHD();
-                    temp[i][j].setID(0);
-                    //temp[i][j].resetColor();
+                            tab[i][j].setID(temp[i][j].getID());
+                            tab[i][j].setColor(tab[k][l].getColor());
+                            tab[i][j].cleanNBHD();
+                            temp[i][j].setID(0);
+                        }
                     }
-                    }
-                
                 }
             }
         }
-    
     }
     
 

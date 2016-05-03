@@ -18,11 +18,11 @@ public class Cell {
     private Color color;
     private int nbhdSize;
     
-    public Cell(int size){  //size is number of neighbours
+    public Cell(){  //size is number of neighbours
         this.id = 0;
-        this.nbhdSize = size;
-        this.nbhd = new int[size];
-        for(int i=0; i<size; i++)
+        this.nbhdSize = 8;
+        this.nbhd = new int[nbhdSize];
+        for(int i=0; i<nbhdSize; i++)
             this.nbhd[i]=0;
         this.color = Color.WHITE;
     }

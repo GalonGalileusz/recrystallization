@@ -1,8 +1,15 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!   ZMIENIC KOD BO CALY CZAS POWTARZA SIE TO SAMO ALE NIE WIEM JAK I NIE WIEM CZY JEST  !
+!                               SENS SKORO DZIALA :V                                    !
+!                   MOZE NIE ZMIENIAC BO JESZCZE SIE COS POJEBIE                        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 SĄSIEDZTWA:
 -moor           v
--von neuman
--pentagonalne (losowe)
--heksagonalne (prawe, lewe, losowe);
+-von neuman     v
+-pentagonalne (losowe - u d l r) _ _ _ _
+-heksagonalne (prawe, lewe, losowe);    v v _
 
 WARUNKI BRZEGOWE:   V
 -periodyczne        v
@@ -16,7 +23,7 @@ ROZMIESZCZENIE:
 -wyklikać       v
 -losowe
 -równomierne
--z promieniem (zadać wartość promienia )
+-z promieniem (zadać wartość promienia ) - TO TO BĘDZIE KURESTWO -_-
 
 DOWOLNA ILOŚĆ ZARODKÓW (zadać)  v
 
@@ -26,3 +33,4 @@ KAŻDA KOMÓRKA MA INNY KOLOR I INNE ID   v
 Najpierw sprawdzam sąsiedztwo;  switch
 potem BC;   switch
 potem leci logika
+
