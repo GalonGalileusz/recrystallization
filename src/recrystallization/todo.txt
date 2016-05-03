@@ -1,0 +1,23 @@
+SĄSIEDZTWA:
+-moor           v
+-von neuman
+-pentagonalne (losowe)
+-heksagonalne (prawe, lewe, losowe);
+
+WARUNKI BRZEGOWE:   V
+-periodyczne        v
+-nieperiodyczne     v
+
+OBLICZANIE ILOŚCI SĄSIADÓW:             V
+-wybranie tych których jest najwięcej   v   
+-jeżeli jest tyle samo to wylosować     v
+
+ROZMIESZCZENIE:
+-wyklikać       v
+-losowe
+-równomierne
+-z promieniem (zadać wartość promienia )
+
+DOWOLNA ILOŚĆ ZARODKÓW (zadać)  v
+
+KAŻDA KOMÓRKA MA INNY KOLOR I INNE ID   v
