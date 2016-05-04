@@ -162,21 +162,21 @@ public class Cell {
                 }                
             }
             
-            System.out.println("repeatTab: ");
+            //System.out.println("repeatTab: ");
             
             Random random = new Random();
             index = 0;
             for(int i=0; i<repeatSize; i++){
-                System.out.print(repeatTab[i]+" ");
+                //System.out.print(repeatTab[i]+" ");
                 if(repeatTab[i]!=0)
                     index++;
             }
-            System.out.println();
-            System.out.println("index "+index);
+            //System.out.println();
+            //System.out.println("index "+index);
 //            int chuj = random.nextInt(index);
 //            System.out.println("chuj "+chuj);
             grain = repeatTab[random.nextInt(index)];
-            System.out.println("grain "+grain);
+            //System.out.println("grain "+grain);
         }
         return grain;   //grain is ID which this cell will get
     }
