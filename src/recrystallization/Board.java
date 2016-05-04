@@ -5,13 +5,13 @@
  */
 package recrystallization;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 import javax.swing.JPanel;
 
 /**
@@ -20,7 +20,8 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 15;
+    private int size = 10;
+    int free = size*size;
     int id = 0;
     
     //int n;
@@ -87,16 +88,44 @@ public class Board extends JPanel implements Runnable{
                         //id++;
                     
                     /*-------Generating structures-----------*/
-                        if(tab[r][c].getID()==0){
-                            id++;
-                            tab[r][c].setID(id);
-                            System.out.println("id "+tab[r][c].getID());
-                            tab[r][c].drawColor();
-                            }
-                            else{
-                                tab[r][c].setID(0);
-                                tab[r][c].resetColor();
+                        switch (cond.getLocation()){
+                            case 0: //own
+                                if(tab[r][c].getID()==0){
+                                    id++;
+                                    tab[r][c].setID(id);
+                                    System.out.println("id "+tab[r][c].getID());
+                                    tab[r][c].drawColor();
+                                }else{
+                                    tab[r][c].setID(0);
+                                    tab[r][c].resetColor();
+                                }
+                                break;
+                            case 1: //random
+                                
+                                System.out.println("random 1");
+                                System.out.println("amount "+cond.getAmount());
+                                for(int i=0; i<cond.getAmount(); ){
+                                    
+                                    if(cond.getAmount()>=free)
+                                        break;
+                                    
+                                    Random ri = new Random();
+                                    
+                                    int a=ri.nextInt(size);
+                                    int b=ri.nextInt(size);
+                                    
+                                    if(tab[a][b].getID()==0){
+                                        tab[a][b].setID(id);
+                                        tab[a][b].drawColor();
+                                        id++;
+                                        i++;
+                                        free--;
+                                    }
+                                }
+                            case 2: //evenly
+                            case 3: //with ray
                         }
+                        
                         
                                   
                     }

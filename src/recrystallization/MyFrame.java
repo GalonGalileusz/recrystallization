@@ -7,6 +7,8 @@ package recrystallization;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
@@ -16,10 +18,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  *
@@ -53,21 +57,19 @@ public class MyFrame extends JFrame{
 	contentPane.add(panel, BorderLayout.NORTH);
         
         JLabel amountLabel = new JLabel ("Number of grains ");
-        JTextArea amountArea = new JTextArea("0");
         panel.add(amountLabel);
-        panel.add(amountArea);
         
-        amountArea.addInputMethodListener(new InputMethodListener() {
+        JTextField jt = new JTextField("0", 4);
+        panel.add(jt);
+        
+        jt.addActionListener(new ActionListener(){
 
             @Override
-            public void inputMethodTextChanged(InputMethodEvent e) {
-                c.setAmount(Integer.valueOf(amountArea.getText()));
+            public void actionPerformed(ActionEvent e) {
+                c.setAmount(Integer.valueOf(jt.getText()));
+                System.out.println("my frame amount "+c.getAmount());
             }
-
-            @Override
-            public void caretPositionChanged(InputMethodEvent e) {
-                
-            }           
+            
         });
   
         JLabel bcLabel = new JLabel("BC ");
@@ -116,22 +118,21 @@ public class MyFrame extends JFrame{
         panel.add(locationCombo);
         
         JLabel rayLabel = new JLabel ("Ray ");
-        JTextArea rayArea = new JTextArea("0");
         panel.add(rayLabel);
-        panel.add(rayArea);
         
-        rayArea.addInputMethodListener(new InputMethodListener() {
+        JTextField rayTF = new JTextField("0", 4);
+        panel.add(rayTF);
+        
+        rayTF.addActionListener(new ActionListener(){
 
             @Override
-            public void inputMethodTextChanged(InputMethodEvent e) {
-                c.setRay(Integer.valueOf(rayArea.getText()));
+            public void actionPerformed(ActionEvent e) {
+                c.setRay(Integer.valueOf(rayTF.getText()));
+                System.out.println("my frame amount "+c.getRay());
             }
-
-            @Override
-            public void caretPositionChanged(InputMethodEvent e) {
-                
-            }           
+            
         });
+       
         
         JButton startButton = new JButton("Start");
         startButton.addMouseListener(new MouseAdapter() {
