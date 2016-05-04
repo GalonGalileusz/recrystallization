@@ -59,9 +59,9 @@ public class Cell {
         this.nbhd[index] = value;
     }
     
-    public int[] getNBHD(){
-        return this.nbhd;
-    }
+//    public int[] getNBHD(){
+//        return this.nbhd;
+//    }
     
     public void showNBHD(){
         for(int i=0; i<nbhdSize; i++)

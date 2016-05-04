@@ -21,7 +21,15 @@ OBLICZANIE ILOŚCI SĄSIADÓW:             V
 
 ROZMIESZCZENIE:
 -wyklikać       v
--losowe
+-losowe ---------> size, (int)halfsize, nie mozna zadac wiecej komorek niz halfsize^2 
+
+ amount / halfsize >= 1 uzupelniaj
+
+uzupelniaj od drugiej linii i leć co 2 i jolo
+
+a jak amount / halfsize < 1 to chuj juz sie nie bede rozdrabniac i tak to wszystko krew w piach
+
+
 -równomierne
 -z promieniem (zadać wartość promienia ) - TO TO BĘDZIE KURESTWO -_-
 

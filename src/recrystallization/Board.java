@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 10;
+    private int size = 70;
     int free = size*size;
     int id = 0;
     
@@ -123,6 +123,27 @@ public class Board extends JPanel implements Runnable{
                                     }
                                 }
                             case 2: //evenly
+                                int grains = cond.getAmount();
+                                int half = size/2;
+                                if(grains<= Math.pow(half, 2)){
+                                    if(grains/half>=1){ // fill all lines
+                                        //while(grains>0){
+                                           for(int i=1; i<size && grains>0; i+=2){
+                                                for(int j=1; j<size && grains>0; j+=2){
+                                                    tab[i][j].setID(id);
+                                                    tab[i][j].drawColor();
+                                                    id++;
+                                                    grains--;
+                                                    
+                                                    //chuj
+                                                }
+                                            } 
+                                        //}
+                                        
+                                    }
+                                }
+                                    
+                                break;
                             case 3: //with ray
                         }
                         
@@ -184,7 +205,7 @@ public class Board extends JPanel implements Runnable{
                 repaint();
             }
             try{
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -417,6 +438,7 @@ public class Board extends JPanel implements Runnable{
                                     temp[i][j].setID(tab[i][j].chooseSeed());
                                     break;        
                             }
+                            break;
                         case 4: //--------------------HEXAGONAL right
                             switch (cond.getBC()){
                                 case 0:
@@ -488,6 +510,9 @@ public class Board extends JPanel implements Runnable{
                     }
                 }  
             }
+                else{
+                    System.out.println("nie sprawdzam");
+                }
         }
         }
         for(int i=0; i<size; i++){
