@@ -1,14 +1,7 @@
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   ZMIENIC KOD BO CALY CZAS POWTARZA SIE TO SAMO ALE NIE WIEM JAK I NIE WIEM CZY JEST  !
-!                               SENS SKORO DZIALA :V                                    !
-!                   MOZE NIE ZMIENIAC BO JESZCZE SIE COS POJEBIE                        !
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
 SĄSIEDZTWA:
 -moor           v
 -von neuman     v
--pentagonalne (losowe - u d l r) _ _ _ _
+-pentagonalne (losowe - u d l r) v v v v
 -heksagonalne (prawe, lewe, losowe);    v v _
 
 WARUNKI BRZEGOWE:   V
@@ -21,7 +14,9 @@ OBLICZANIE ILOŚCI SĄSIADÓW:             V
 
 ROZMIESZCZENIE:
 -wyklikać       v
--losowe ---------> size, (int)halfsize, nie mozna zadac wiecej komorek niz halfsize^2 
+-losowe v
+
+---------> size, (int)halfsize, nie mozna zadac wiecej komorek niz halfsize^2 
 
  amount / halfsize >= 1 uzupelniaj
 
@@ -31,7 +26,7 @@ a jak amount / halfsize < 1 to chuj juz sie nie bede rozdrabniac i tak to wszyst
 
 
 -równomierne
--z promieniem (zadać wartość promienia ) - TO TO BĘDZIE KURESTWO -_-
+-z promieniem (zadać wartość promienia ) v
 
 DOWOLNA ILOŚĆ ZARODKÓW (zadać)  v
 

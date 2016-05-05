@@ -17,6 +17,7 @@ public class Cell {
     private int nbhd[];
     private Color color;
     private int nbhdSize;
+    private int inRay;
     
     public Cell(){  //size is number of neighbours
         this.id = 0;
@@ -25,6 +26,7 @@ public class Cell {
         for(int i=0; i<nbhdSize; i++)
             this.nbhd[i]=0;
         this.color = Color.WHITE;
+        this.inRay = 0;
     }
     
     public void setID(int id){
@@ -63,14 +65,22 @@ public class Cell {
 //        return this.nbhd;
 //    }
     
-    public void showNBHD(){
-        for(int i=0; i<nbhdSize; i++)
-            System.out.print(this.nbhd[i]+" ");
-    }
+//    public void showNBHD(){
+//        for(int i=0; i<nbhdSize; i++)
+//            System.out.print(this.nbhd[i]+" ");
+//    }
     
     public void cleanNBHD(){
         for(int i=0; i<nbhdSize; i++)
             this.nbhd[i]=0;
+    }
+    
+    public void setInRay(){
+        this.inRay = 1;
+    }
+    
+    public int getInRay(){
+        return this.inRay;
     }
     
     public int chooseSeed(){

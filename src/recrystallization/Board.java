@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 10;
+    private int size = 120;
     private int free = size*size;
     private int id = 0;
     
@@ -69,7 +69,7 @@ public class Board extends JPanel implements Runnable{
                     /*-------Generating structures-----------*/
                         switch (cond.getLocation()){
                             case 0: //own
-                                if(tab[r][c].getID()==0){
+                                if(tab[r][c].getID()==0 && tab[r][c].getInRay()==0){
                                     id++;
                                     tab[r][c].setID(id);
                                     //System.out.println("id "+tab[r][c].getID());
@@ -125,6 +125,48 @@ public class Board extends JPanel implements Runnable{
                                     
                                 break;
                             case 3: //with ray
+                                
+                                int ray = cond.getRay();
+                                
+                                for(int i=0; i<cond.getAmount(); ){
+                                    
+                                    System.out.println("i "+i);
+                                    
+                                    if(cond.getAmount()>=free)
+                                        break;
+                                    
+                                    Random ri = new Random();
+                                    
+                                    int a=ri.nextInt(size);
+                                    int b=ri.nextInt(size);
+                                    
+                                    if(tab[a][b].getID()==0 && tab[a][b].getInRay()==0){
+                                        tab[a][b].setID(id);
+                                        tab[a][b].drawColor();
+                                        id++;
+                                        i++;
+                                        //free--;
+                                        
+                                        for(int m=a-ray; m<=a+ray; m++){
+                                            for(int n=b-ray; n<=b+ray; n++){
+                                                if(m<0 || m>=size)
+                                                    continue;
+                                            
+                                                if(n<0 || n>=size)
+                                                    continue;
+                                            
+                                                if(tab[m][n].getInRay()==0){
+                                                    tab[m][n].setInRay();
+                                                    free--;
+                                                }
+                                                
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                }
+                                
                                 break;
                         }
                         
@@ -163,8 +205,8 @@ public class Board extends JPanel implements Runnable{
                 
                 Rectangle cell = new Rectangle(x + j*cellW,
                             y + i*cellH,
-                            cellW-1,
-                            cellH-1);
+                            cellW,
+                            cellH);
                 g2d.fill(cell);
 
             }
@@ -186,7 +228,7 @@ public class Board extends JPanel implements Runnable{
                 repaint();
             }
             try{
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -195,6 +237,7 @@ public class Board extends JPanel implements Runnable{
 
     public void clean(){
         
+        free = size*size;
         id=0;
         
         for(int i=0; i<size; i++){
@@ -349,8 +392,8 @@ public class Board extends JPanel implements Runnable{
                             }
                             break;
                         case 2: //--------------------PENTAGONAL + random for up, down, left, right
-                            w=2;
-                            System.out.println("pentagonal 0-up  1-down  2-left  3-right "+w);
+                            //w=2;
+                            //System.out.println("pentagonal 0-up  1-down  2-left  3-right "+w);
                             switch (cond.getBC()){
                                 case 0:
                                     if(i==0 && j==0){   //up-left corner
@@ -469,6 +512,41 @@ public class Board extends JPanel implements Runnable{
                                     
                                     break;
                                 case 1:
+                                    for(int k=i-1; k<i+2; k++){
+                                        for(int l=j-1; l<j+2; l++){
+                                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if(k==i && l==j)
+                                                ;//System.out.println("don't check itself");
+                                            else if(w==0 && k==i+1)
+                                                ;
+                                            else if(w==1 && k==i-1)
+                                                ;
+                                            else if(w==2 && l==j+1)
+                                                ;
+                                            else if(w==3 && l==j-1)
+                                                ;
+                                            else{
+                                                tab[i][j].setNBHD(nbhdIndex, tab[kk][ll].getID());
+                                                nbhdIndex++;
+                                            }
+                                        }
+                                    }
+                                    temp[i][j].setID(tab[i][j].chooseSeed());
                                     break;        
                             }
                             break;

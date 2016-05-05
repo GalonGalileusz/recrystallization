@@ -140,6 +140,7 @@ public class MyFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e){
                 c.setStatus(1);
+                System.out.println("Start clicked");
             }
         });
         
@@ -149,6 +150,7 @@ public class MyFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e){
                 c.setStatus(0);
+                System.out.println("Stop clicked");
             }
         });
         
@@ -157,7 +159,8 @@ public class MyFrame extends JFrame{
             
             @Override
             public void mouseClicked(MouseEvent e){
-                c.setStatus(2); 
+                c.setStatus(2);
+                System.out.println("Clean clicked");
             }
         });
         
