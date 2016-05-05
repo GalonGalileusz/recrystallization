@@ -349,7 +349,7 @@ public class Board extends JPanel implements Runnable{
                             }
                             break;
                         case 2: //--------------------PENTAGONAL + random for up, down, left, right
-                            w=3;
+                            w=2;
                             System.out.println("pentagonal 0-up  1-down  2-left  3-right "+w);
                             switch (cond.getBC()){
                                 case 0:
@@ -455,9 +455,9 @@ public class Board extends JPanel implements Runnable{
                                                 ;
                                             else if(w==1 && k==i-1)
                                                 ;
-                                            else if(w==2 && l==j-1)
+                                            else if(w==2 && l==j+1)
                                                 ;
-                                            else if(w==3 && l==j+1)
+                                            else if(w==3 && l==j-1)
                                                 ;
                                             else{
                                                 tab[i][j].setNBHD(nbhdIndex, tab[k][l].getID());
