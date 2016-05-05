@@ -2,7 +2,7 @@ SĄSIEDZTWA:
 -moor           v
 -von neuman     v
 -pentagonalne (losowe - u d l r) v v v v
--heksagonalne (prawe, lewe, losowe);    v v _
+-heksagonalne (prawe, lewe, losowe);    v v v
 
 WARUNKI BRZEGOWE:   V
 -periodyczne        v

@@ -8,34 +8,28 @@ package recrystallization;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
  *
  * @author Dendelion
  */
-public class MyFrame extends JFrame{
+public final class MyFrame extends JFrame{
     
-    private String[] bcs = new String[]{"Non-periodic", "Periodic"};
-    private String[] neighbours = new String[]{"Moor", "Von Neuman", "Pentagonal (random)", "Hexagonal (left)", "Hexagonal (right)", "Hexagonal (random)"};
-    private String[] locations = new String[]{"Own", "Ranodm", "Evenly", "With ray"};
-    private JPanel contentPane;
-    private Board board;
+    private final String[] bcs = new String[]{"Non-periodic", "Periodic"};
+    private final String[] neighbours = new String[]{"Moor", "Von Neuman", "Pentagonal (random)", "Hexagonal (left)", "Hexagonal (right)", "Hexagonal (random)"};
+    private final String[] locations = new String[]{"Own", "Ranodm", "Evenly", "With ray"};
+    private final JPanel contentPane;
+    private final Board board;
     private Conditions c;
     
     public MyFrame(){
@@ -62,26 +56,17 @@ public class MyFrame extends JFrame{
         JTextField jt = new JTextField("0", 4);
         panel.add(jt);
         
-        jt.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c.setAmount(Integer.valueOf(jt.getText()));
-                System.out.println("my frame amount "+c.getAmount());
-            }
-            
+        jt.addActionListener((ActionEvent e) -> {
+            c.setAmount(Integer.valueOf(jt.getText()));
+            System.out.println("my frame amount "+c.getAmount());
         });
   
         JLabel bcLabel = new JLabel("BC ");
         panel.add(bcLabel);
         
         JComboBox bcCombo = new JComboBox();
-        bcCombo.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                c.setBC(bcCombo.getSelectedIndex());
-            }
+        bcCombo.addItemListener((ItemEvent e) -> {
+            c.setBC(bcCombo.getSelectedIndex());
         });
         
         bcCombo.setModel(new DefaultComboBoxModel(this.bcs));
@@ -91,12 +76,8 @@ public class MyFrame extends JFrame{
         panel.add(nbhdLabel);
         
         JComboBox nbhdCombo = new JComboBox();
-        nbhdCombo.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                c.setNeighbour(nbhdCombo.getSelectedIndex());
-            }
+        nbhdCombo.addItemListener((ItemEvent e) -> {
+            c.setNeighbour(nbhdCombo.getSelectedIndex());
         });
         
         nbhdCombo.setModel(new DefaultComboBoxModel(this.neighbours));
@@ -106,12 +87,8 @@ public class MyFrame extends JFrame{
         panel.add(locationLabel);
         
         JComboBox locationCombo = new JComboBox();
-        locationCombo.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                c.setLocation(locationCombo.getSelectedIndex());
-            }
+        locationCombo.addItemListener((ItemEvent e) -> {
+            c.setLocation(locationCombo.getSelectedIndex());
         });
 
         locationCombo.setModel(new DefaultComboBoxModel(this.locations));
@@ -123,16 +100,10 @@ public class MyFrame extends JFrame{
         JTextField rayTF = new JTextField("0", 4);
         panel.add(rayTF);
         
-        rayTF.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c.setRay(Integer.valueOf(rayTF.getText()));
-                System.out.println("my frame amount "+c.getRay());
-            }
-            
-        });
-       
+        rayTF.addActionListener((ActionEvent e) -> {
+            c.setRay(Integer.valueOf(rayTF.getText()));
+            System.out.println("my frame amount "+c.getRay());
+        });  
         
         JButton startButton = new JButton("Start");
         startButton.addMouseListener(new MouseAdapter() {
@@ -167,18 +138,13 @@ public class MyFrame extends JFrame{
         panel.add(startButton);
         panel.add(stopButton);
         panel.add(cleanButton);
-        
-        
+            
         contentPane.add(board, BorderLayout.CENTER);
         
-        new Thread(board).start();
-        
-        
+        new Thread(board).start();   
     } 
     
     public Dimension getPrefferredSize(){
         return new Dimension(800, 800);
     }
-    
-
 }
