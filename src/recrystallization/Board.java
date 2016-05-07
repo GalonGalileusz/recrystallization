@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 120;
+    private int size = 121;
     private int free = size*size;
     private int id = 0;
     
@@ -97,9 +97,9 @@ public class Board extends JPanel implements Runnable{
                                     int b=ri.nextInt(size);
                                     
                                     if(tab[a][b].getID()==0){
+                                        id++;
                                         tab[a][b].setID(id);
                                         tab[a][b].drawColor();
-                                        id++;
                                         i++;
                                         free--;
                                     }
@@ -107,20 +107,50 @@ public class Board extends JPanel implements Runnable{
                                 break;
                             case 2: //evenly
                                 int grains = cond.getAmount();
-                                int half = size/2;
-                                if(grains<= Math.pow(half, 2)){
-                                    if(grains/half>=1){ // fill all line
-                                        for(int i=1; i<size && grains>0; i+=2){
-                                            for(int j=1; j<size && grains>0; j+=2){
-                                                tab[i][j].setID(id);
-                                                tab[i][j].drawColor();
-                                                id++;
-                                                grains--;
-                                                    //chuj
-                                            }
-                                        } 
-                                    }
-                                }   
+                                int maxInRow = (size-1)/2;          //60
+                                int max = maxInRow * maxInRow;      //3600
+                                
+                                System.out.println(" "+maxInRow);
+                                
+                                if(grains<=max){
+                                    double element = Math.sqrt(grains);
+                                    
+                                    System.out.println("ele "+element);
+                                    
+                                    //if(element%1 == 0){
+                                                                       
+                                        int position = (int) ((size-1) / (2*element));
+                                        //int position = (int) (Math.ceil((size-1) / (2*element)));
+                                        
+                                        //System.out.println("position "+position);
+                                        
+                                        int rest = (int)(((size-1) / (2*element) - position) * 10);
+                                        
+                                        //System.out.println("rest "+rest);
+                                        
+                                        if(rest>=5)
+                                            position++;
+                                        
+                                        //System.out.println("2position "+position);
+                                        //System.out.println("2rest "+rest);
+                                        
+                                        for(int i=0; i<grains; ){
+                                                for(int p=position; p<size && i<grains; p+=2*position){
+                                                    for(int q=position; q<size && i<grains; q+=2*position){
+                                                        id++;
+                                                        tab[p][q].setID(id);
+                                                        tab[p][q].drawColor();
+                                                        i++;  
+                                                    }
+                                                }
+
+                                        }
+                                        
+//                                    }else{
+//                                        
+//                                    }                                    
+                                }
+                                
                                 break;
                             case 3: //with ray
                                 
@@ -139,9 +169,10 @@ public class Board extends JPanel implements Runnable{
                                     int b=ri.nextInt(size);
                                     
                                     if(tab[a][b].getID()==0 && tab[a][b].getInRay()==0){
+                                        id++;
                                         tab[a][b].setID(id);
                                         tab[a][b].drawColor();
-                                        id++;
+                                        
                                         i++;
                                         
                                         for(int m=a-ray; m<=a+ray; m++){
