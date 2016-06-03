@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable{
     
-    private int size = 121;
+    private int size = 300;
     private int free = size*size;
     private int id = 0;
     
@@ -683,18 +683,57 @@ public class Board extends JPanel implements Runnable{
         }
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
-                for(int k=0; k<size; k++){
-                    for(int l=0; l<size; l++){
-                        if(tab[i][j].getID()==0 && temp[i][j].getID()==tab[k][l].getID()){
+                for(int k=i-1; k<i+2; k++){
+                    for(int l=j-1; l<j+2; l++){
+                        
+                        if(cond.getBC()==0){
+                            
+                            if((k==i && l==j) || k<0 || k>=size || l<0 || l>=size)
+                                                ;//System.out.println("go ");
+                            else{
+                                if(tab[i][j].getID()==0 && temp[i][j].getID()==tab[k][l].getID()){
                             tab[i][j].setID(temp[i][j].getID());
                             tab[i][j].setColor(tab[k][l].getColor());
                             tab[i][j].cleanNBHD();
                             temp[i][j].setID(0);
+                            }
+                                            }
+                        }else{
+                            int kk, ll;
+                                            
+                                            if(k<0)
+                                                kk=size-1;
+                                            else if(k>=size)
+                                                kk=0;
+                                            else
+                                                kk=k;
+                                            
+                                            if(l<0)
+                                                ll=size-1;
+                                            else if(l>=size)
+                                                ll=0;
+                                            else 
+                                                ll=l;
+                                            
+                                            if(k==i && l==j)
+                                                ;//System.out.println("don't check itself");
+                                            else{
+                                                if(tab[i][j].getID()==0 && temp[i][j].getID()==tab[kk][ll].getID()){
+                            tab[i][j].setID(temp[i][j].getID());
+                            tab[i][j].setColor(tab[kk][ll].getColor());
+                            tab[i][j].cleanNBHD();
+                            temp[i][j].setID(0);
+                                            }
+       
+                                        }
+                                    }
                         }
+                        
+                        
                     }
                 }
             }
         }
     }
-}
+
     
